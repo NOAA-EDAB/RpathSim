@@ -1,12 +1,50 @@
 Package: RpathSim
-Title: What the Package Does (One Line, Title Case)
+Title: Simulation testing of the Rpath model for WGSAM
 Version: 0.0.0.9000
-Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+Authors@R: c(person(given  = "Sean", 
+                    family = "Lucey",
+                    email  = "Sean.Lucey@NOAA.gov", 
+                    role   = c("aut", "cre"),
+                    comment = c(ORCID = "0000-0001-6675-5500")),
+             person(given  = "Sarah",
+                    family = "Gaichas",
+                    email  = "Sarah.Gaichas@NOAA.gov", 
+                    role   = c("aut", "cre"),
+             person(given  = "Kerim", 
+                    family = "Aydin",
+                    email  = "Kerim.Aydin@NOAA.gov", 
+                    role   = c("aut", "cre"),
+             person(given  = "Igor", 
+                    family = "Celic",
+                    email  = "icelic@ogs.it", 
+                    role   = c("aut", "cre"),
+             person(given  = "Thomas", 
+                    family = "Del Santo O'Neill",
+                    email  = "t.j.delsantooneill@qmul.ac.uk", 
+                    role   = c("aut", "cre"),
+             person(given  = "Sarah", 
+                    family = "Weisberg",
+                    email  = "sarah.j.weisberg@stonybrook.edu",
+                    role   = c("aut", "cre"),
+             person(given  = "Andy", 
+                    family = "Whitehouse",
+                    email  = "andy.whitehouse@noaa.gov",
+                    role   = c("aut", "cre"))
+Description: This repository will house various Rpath models that have been 
+  developed to test the performance of the model.  Rpath is a mass balance food
+  web model based on Polovina 1984 and the popular Ecopath with Ecosim software.
+  This is part of a larger project being run by the International Council for 
+  the Exploration of the Seas (ICES) working group on multispecies assessment 
+  methods (WGSAM).
+License: file LICENSE
 Encoding: UTF-8
+URL: https://github.com/NOAA-EDAB/RpathSim,
+    https://noaa-edab.github.io/RpathSim/
+BugReports: https://github.com/NOAA-EDAB/RpathSim/issues
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.2
+Suggests: 
+    knitr,
+    rmarkdown,
+    markdown
+VignetteBuilder: knitr
