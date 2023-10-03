@@ -1,0 +1,92 @@
+---
+title: "Summary of Parameters for Rpath"
+author: "Sarah Gaichas"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+library(here)
+library(tidyverse)  
+library(atlantisom)
+library(ggthemes)
+
+```
+
+## Species in Atlantis for Rpath
+
+```{r}
+
+```
+
+
+## Total Catch
+
+Already in mskeyrun? Yes. 
+
+Plot it. 
+
+```{r}
+# make sure to install mskeyrun branch sarah_wgsamsim as not yet in main branch
+
+# make a catch series function that can be split by fleet? this doesnt
+# also note different time (days) from model timestep in all other output
+plotC <- function(dat, truedat=NULL){
+  
+    ctbio <- dat %>% filter(variable=="catch")
+    ctcv <- dat %>% filter(variable=="cv")
+  
+    ggplot() +
+    geom_line(data=ctbio, aes(x=year,y=value, color="Catch biomass"), 
+              alpha = 10/10) +
+    {if(!is.null(truedat)) geom_line(data=truedat, aes(x=time/365,y=atoutput, color="True Catch"), alpha = 3/10)} + 
+    theme_tufte() +
+    theme(legend.position = "top") +
+    xlab("model year") +
+    ylab("tons") +
+    labs(colour=dat$ModSim) +
+    facet_wrap(~Name, scales="free") 
+  
+}
+
+catchbio_ss <- mskeyrun::simCatchIndexFW #atlantisom::read_savedfisheries(d.name, 'Catch')
+
+plotC(catchbio_ss)
+```
+
+### Fishery catch time series
+```{r catchind-1, results="asis", message=FALSE, warning=FALSE}
+# observed catch only
+plotC(catchbio_ss)
+```
+
+
+## Total Biomass
+
+Work in progress
+
+Avaliable for age structured fish groups
+
+Add other age structured groups
+
+Add biomass pools
+
+## Diets for all
+
+Did I pull this?
+
+## Total Production 
+
+Can we get total production from Atlantis? What is in PROD.nc
+
+Or do we need to sum the catch and consumption removals with the population growth in each year to get production
+
+
+
+## Total Consumption
+
+Already have this from detailed diet check
+
+
+
