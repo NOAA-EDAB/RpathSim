@@ -84,11 +84,55 @@ plotC(catchbio_sub)
 
 ## Total Biomass
 
-Work in progress
+Work in progress.
 
-Available for age structured fish groups
+Available for age structured fish groups and other age structured groups:
 
-Add other age structured groups
+```{r}
+# plot biomass time series facet wrapped by species
+plotB <- function(dat, truedat=NULL){
+  
+    svbio <- dat %>% filter(variable=="biomass")
+    svcv <- dat %>% filter(variable=="cv")
+  
+    ggplot() +
+    geom_line(data=svbio, aes(x=year,y=value, color="Survey Biomass"), 
+              alpha = 10/10) +
+    {if(!is.null(truedat)) geom_line(data=truedat, aes(x=time/365,y=atoutput, color="True B"), alpha = 3/10)} + 
+    theme_tufte() +
+    theme(legend.position = "top") +
+    xlab("model year") +
+    ylab("tons") +
+    labs(colour=dat$ModSim) +
+    facet_wrap(~Name, scales="free") 
+  
+}
+
+survObsBiom <- mskeyrun::simSurveyIndexFW #atlantisom::read_savedsurvs(d.name, 'survB')
+
+```
+
+### Survey biomass index {.tabset}
+```{r, results="asis"}
+
+# compare with true output (all timesteps)
+# for(s in names(survObsBiom)){
+#   cat("  \n##### ",  s,"  \n")
+#   print(plotB(survObsBiom[[s]][[1]], omlist_ss$truetotbio_ss))
+#   cat("  \n")
+# }
+
+# plots survey only
+ for(s in unique(survObsBiom$survey)){
+   cat("  \n##### ",  s,"  \n")
+   print(plotB(survObsBiom %>%
+                 filter((survey %in% s))))
+   cat("  \n")
+ }
+
+```
+
+### {-}
 
 Add biomass pools
 
