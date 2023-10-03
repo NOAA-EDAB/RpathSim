@@ -2,7 +2,9 @@
 title: "Summary of Parameters for Rpath"
 author: "Sarah Gaichas"
 date: "`r Sys.Date()`"
-output: html_document
+output:
+  html_document:
+    code_fold: hide
 ---
 
 ```{r setup, include=FALSE}
@@ -16,16 +18,26 @@ library(ggthemes)
 
 ## Species in Atlantis for Rpath
 
+The full species list from Atlantis, with group type and whether it is fished.
+
 ```{r}
+
+localatlantisdir <- "/Users/sarah.gaichas/Documents/0_Data/ms-keyrun/simulated-data/atlantisoutput/NOBA_sacc_38"
+
+fwspp <- atlantisom::load_fgs(localatlantisdir, "nordic_groups_v04.csv") %>% 
+  dplyr::filter(IsTurnedOn == 1) %>%
+  dplyr::select(Code, Name, Long.Name, NumCohorts, isFished, InvertType) 
+
+knitr::kable(fwspp)
 
 ```
 
 
 ## Total Catch
 
-Already in mskeyrun? Yes. 
+Already in `mskeyrun` (sarah_wgsamsim branch)? Yes. 
 
-Plot it. 
+Plot it. Turns out even though mammals can be caught, they are not in the catch output so probably not in this run. The catch we have added here in addition to the main `mskeyrun` data is Prawns, Redfish other, and Snow crabs (which appear to have 0 catch).
 
 ```{r}
 # make sure to install mskeyrun branch sarah_wgsamsim as not yet in main branch
@@ -50,9 +62,7 @@ plotC <- function(dat, truedat=NULL){
   
 }
 
-catchbio_ss <- mskeyrun::simCatchIndexFW #atlantisom::read_savedfisheries(d.name, 'Catch')
-
-plotC(catchbio_ss)
+catchbio_ss <- mskeyrun::simCatchIndexFW #atlantisom::read_savedfisheries(d.name, 'Catch')  
 ```
 
 ### Fishery catch time series
@@ -61,12 +71,22 @@ plotC(catchbio_ss)
 plotC(catchbio_ss)
 ```
 
+### Fishery catch subannual
+```{r catchind-2, results="asis", message=FALSE, warning=FALSE}
+
+catchbio_sub <- mskeyrun::simCatchIndexSubannualFW
+
+# observed catch only
+plotC(catchbio_sub)
+```
+
+
 
 ## Total Biomass
 
 Work in progress
 
-Avaliable for age structured fish groups
+Available for age structured fish groups
 
 Add other age structured groups
 
@@ -74,7 +94,7 @@ Add biomass pools
 
 ## Diets for all
 
-Did I pull this?
+Did I pull this? No.
 
 ## Total Production 
 
