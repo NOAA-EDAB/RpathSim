@@ -84,9 +84,9 @@ plotC(catchbio_sub)
 
 ## Total Biomass
 
-Work in progress.
+Update: working now for all groups.
 
-Available for age structured fish groups and other age structured groups:
+Available for age structured fish groups, other age structured groups, and biomass pools:
 
 ```{r}
 # plot biomass time series facet wrapped by species
@@ -113,7 +113,7 @@ survObsBiom <- mskeyrun::simSurveyIndexFW #atlantisom::read_savedsurvs(d.name, '
 ```
 
 ### Survey biomass index {.tabset}
-```{r, results="asis"}
+```{r, results="asis", fig.width=10, fig.asp=1}
 
 # compare with true output (all timesteps)
 # for(s in names(survObsBiom)){
@@ -124,7 +124,7 @@ survObsBiom <- mskeyrun::simSurveyIndexFW #atlantisom::read_savedsurvs(d.name, '
 
 # plots survey only
  for(s in unique(survObsBiom$survey)){
-   cat("  \n##### ",  s,"  \n")
+   cat("  \n#### ",  s,"  \n")
    print(plotB(survObsBiom %>%
                  filter((survey %in% s))))
    cat("  \n")
@@ -134,7 +134,7 @@ survObsBiom <- mskeyrun::simSurveyIndexFW #atlantisom::read_savedsurvs(d.name, '
 
 ### {-}
 
-Add biomass pools
+Biomass pools added to workflow in` atlantisom::run_truth`, `atlantisom::om_species`, and `atlantisom::om_index`, new surveys generated in `mskeyrun` SimData vignette, new datasets generated with `mskeyrun::create_sim_survey_index_fw`.
 
 ## Diets for all
 
