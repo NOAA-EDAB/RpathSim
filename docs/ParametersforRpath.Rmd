@@ -138,7 +138,160 @@ Biomass pools added to workflow in` atlantisom::run_truth`, `atlantisom::om_spec
 
 ## Diets for all
 
-Did I pull this? No.
+Did I pull this? Just now yes.
+
+How many prey categories across all diets?
+```{r}
+preynames <- unique(c(mskeyrun::simSurveyDietcomp$prey, mskeyrun::simSurveyDietcompFW$prey))
+
+preynames
+```
+
+
+Plotting functions and colors for everyone
+
+```{r color-plotfun}
+
+#  #http://medialab.github.io/iwanthue/
+# 46 colors hard force vector colorblind friendly,sort by diff
+preycol <- c("#647c00", 
+             "#ff91cb", 
+             "#114000", 
+             "#6499ff",
+             "#ffca82",
+             "#1e1c5e",
+             "#a2c032",
+             "#820038",
+             "#00b06a",
+             "#4e005c",
+             "#ffa83c",
+             "#772c5c",
+             "#9f4f00",
+             "#78adff",
+             "#ff6c80",
+             "#003376",
+             "#8e6a00",
+             "#005ccb",
+             "#00703a",
+             "#a883ff",
+             "#008c59",
+             "#5f2192",
+             "#b0e37f",
+             "#6a0064",
+             "#a7e66e",
+             "#6a0022",
+             "#68ae2f",
+             "#d12e8c",
+             "#7a9852",
+             "#ca0a5c",
+             "#e0d688",
+             "#7d007a",
+             "#3d9c28",
+             "#9e5487",
+             "#af9700",
+             "#b391d6",
+             "#005506",
+             "#ae5acd",
+             "#009639",
+             "#0163b8",
+             "#ff9065",
+             "#fa98ff",
+             "#692c00",
+             "#ff8aa7",
+             "#8f0012",
+             "#b02713")
+names(preycol) <- as.factor(preynames)
+
+# going for more greyscale for unident categories, same website
+unidcol <- c("#b8b8b2",
+             "#302a1d",
+             "#6b7069",
+             "#1e3430")
+names(unidcol) <- as.factor(c("Unid", "Unid_Fish",  "Unid_Invert", "Unid_Plankton"))
+
+col <- c(preycol, unidcol)
+
+# plot diet comp over time at age by species
+plotdiet <- function(dat, compdat=NULL, namedat, namecomp=NULL){
+  
+  dat <- dat %>% add_column(run = namedat)
+  if(!is.null(compdat)) compdat <- compdat %>% add_column(run = namecomp)
+  
+    ggplot() +
+    geom_bar(data=dat, aes(year, value, fill=prey), stat = "identity") +
+    {if(!is.null(compdat)) geom_bar(data=compdat, aes(year, value, fill=prey), stat = "identity")} + 
+    theme_tufte() +
+    theme(legend.position = "bottom") +
+    xlab("year") +
+    ylab("diet proportion") +
+    facet_grid(agecl~run) + 
+    scale_fill_manual(values=col) + 
+    ggtitle(dat$Name)
+  
+}
+
+# method for a single species diet, no comparisons
+# plist = lapply(split(ms_diet, ms_diet$species), function(d) {
+#   ggplot(d, aes(time.days/365, atoutput, fill=prey)) + 
+#     geom_bar(stat = "identity") +
+#     facet_wrap(species~agecl) +
+#     xlab("year") +
+#     ylab("diet proportion") +
+#     theme_tufte() +
+#     theme(legend.position="bottom")
+# })
+
+```
+
+## Visualize diet comparisons 
+
+### Surveyed diet 11 species {.tabset}
+
+Here we compare the surveyed diet comps:
+
+```{r, fig.width=9, fig.height=12, results='asis'}
+
+preds <- unique(mskeyrun::simSurveyDietcomp$Name)
+
+surveys <- unique(mskeyrun::simSurveyDietcomp$survey)
+
+for(i in 1:length(preds)) {
+  cat("  \n####",  as.character(preds[i]),"  \n")
+  print(plotdiet(dat = mskeyrun::simSurveyDietcomp |> dplyr::filter(survey == surveys[1], Name %in% preds[i]), 
+                 namedat = surveys[1], 
+                 compdat = mskeyrun::simSurveyDietcomp |> dplyr::filter(survey == surveys[2], Name %in% preds[i]),
+                 namecomp = surveys[2])) 
+  cat("  \n")
+}
+
+```
+
+### {-}
+
+### Surveyed diet remaining species {.tabset}
+
+```{r, fig.width=9, fig.height=12, results='asis'}
+
+surveys <- unique(mskeyrun::simSurveyDietcompFW$survey)[c(1,3)] # has other surveys in it
+preds <- mskeyrun::simSurveyDietcompFW |>
+  dplyr::filter(survey %in% surveys) |>
+  dplyr::select(Name) |>
+  dplyr::distinct() |>
+  as.vector() |>
+  unname() |>
+  unlist()
+
+
+for(i in 1:length(preds)) {
+  cat("  \n####",  as.character(preds[i]),"  \n")
+  print(plotdiet(dat = mskeyrun::simSurveyDietcompFW |> dplyr::filter(survey == surveys[1], Name %in% preds[i]), 
+                 namedat = surveys[1], 
+                 compdat = mskeyrun::simSurveyDietcompFW |> dplyr::filter(survey == surveys[2], Name %in% preds[i]),
+                 namecomp = surveys[2])) 
+  cat("  \n")
+}
+```
+
 
 ## Total Production 
 
