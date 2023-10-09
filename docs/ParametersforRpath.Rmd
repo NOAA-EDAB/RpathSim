@@ -22,7 +22,8 @@ The full species list from Atlantis, with group type and whether it is fished.
 
 ```{r}
 
-localatlantisdir <- "/Users/sarah.gaichas/Documents/0_Data/ms-keyrun/simulated-data/atlantisoutput/NOBA_sacc_38"
+#localatlantisdir <- "/Users/sarah.gaichas/Documents/0_Data/ms-keyrun/simulated-data/atlantisoutput/NOBA_sacc_38"
+localatlantisdir <- here("data-raw")
 
 fwspp <- atlantisom::load_fgs(localatlantisdir, "nordic_groups_v04.csv") %>% 
   dplyr::filter(IsTurnedOn == 1) %>%
